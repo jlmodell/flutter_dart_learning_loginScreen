@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import '../mixins/validation_mixins.dart';
 
 class LoginScreen extends StatefulWidget {
   createState() {
@@ -8,7 +9,7 @@ class LoginScreen extends StatefulWidget {
   }
 }
 
-class LoginScreenState extends State<LoginScreen> {
+class LoginScreenState extends State<LoginScreen> with ValidationMixin {
   final formKey = GlobalKey<FormState>();
   final url = 'https://busse-nestjs-api.herokuapp.com/users/login';
 
@@ -41,12 +42,7 @@ class LoginScreenState extends State<LoginScreen> {
         hintText: 'you@example.com',
       ),
       keyboardType: TextInputType.emailAddress,
-      validator: (String value) {
-        if (!value.contains('@')) {
-          return 'Please enter a valid email';
-        }
-        return null;
-      },
+      validator: validateEmail,
       onSaved: (String value) {
         email = value;
       },
@@ -59,12 +55,7 @@ class LoginScreenState extends State<LoginScreen> {
       decoration: InputDecoration(
         labelText: 'Password',
       ),
-      validator: (String value) {
-        if (value.length < 6) {
-          return 'Password must be at least 6 characters';
-        }
-        return null;
-      },
+      validator: validatePassword,
       onSaved: (String value) {
         password = value;
       },
@@ -76,6 +67,7 @@ class LoginScreenState extends State<LoginScreen> {
       onPressed: () async {
         if (formKey.currentState.validate()) {
           formKey.currentState.save();
+
           var body = {
             "email": "$email",
             "password": "$password",
@@ -90,6 +82,7 @@ class LoginScreenState extends State<LoginScreen> {
 
           print(token);
         }
+
         return null;
       },
       child: Text('Submit'),
