@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'screens/login_screen_bloc.dart';
-import 'screens/register_screen_bloc.dart';
+// import 'screens/login_screen_bloc.dart';
+// import 'screens/register_screen_bloc.dart';
+import 'screens/learning_animation.dart';
 import 'blocs/provider.dart';
 
 class App extends StatelessWidget {
@@ -13,7 +14,7 @@ class App extends StatelessWidget {
             title: Text('Busse Hospital Disposables'),
           ),
           // body: LoginScreen(),
-          body: RegisterScreen(),
+          body: LearningAnimation(),
         ),
       ),
     );

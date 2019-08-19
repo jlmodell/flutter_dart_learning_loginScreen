@@ -71,11 +71,11 @@ class RegisterScreen extends StatelessWidget {
 
   Widget submitButton(Bloc bloc) {
     return StreamBuilder(
-        stream: bloc.submitValid,
+        stream: bloc.registerValid,
         builder: (context, snapshot) {
           return RaisedButton(
             child: Text('Register'),
-            onPressed: bloc.register,
+            onPressed: snapshot.hasData ? bloc.register : null,
             color: Colors.green[100],
           );
         });
