@@ -1,4 +1,5 @@
 import 'dart:async';
+import '../blocs/provider.dart';
 
 class Validators {
   final validateEmail = StreamTransformer<String, String>.fromHandlers(

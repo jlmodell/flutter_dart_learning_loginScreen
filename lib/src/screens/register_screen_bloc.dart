@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 import '../blocs/bloc.dart';
 import '../blocs/provider.dart';
 
-class LoginScreen extends StatelessWidget {
-  Widget build(context) {
+class RegisterScreen extends StatelessWidget {
+  Widget build(BuildContext context) {
     final bloc = Provider.of(context);
 
     return Container(
       margin: EdgeInsets.all(20.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [
+        children: <Widget>[
           emailField(bloc),
           passwordField(bloc),
+          passwordTwoField(bloc),
           Padding(padding: EdgeInsets.only(top: 30.0)),
           submitButton(bloc),
         ],
@@ -28,8 +29,8 @@ class LoginScreen extends StatelessWidget {
           onChanged: bloc.changeEmail,
           keyboardType: TextInputType.emailAddress,
           decoration: InputDecoration(
-            labelText: 'Email Address',
-            hintText: 'you@example.com',
+            labelText: "Email Address",
+            hintText: 'you@busseinc.com',
             errorText: snapshot.error,
           ),
         );
@@ -45,7 +46,7 @@ class LoginScreen extends StatelessWidget {
           onChanged: bloc.changePassword,
           obscureText: true,
           decoration: InputDecoration(
-            labelText: 'Password',
+            labelText: "Password",
             errorText: snapshot.error,
           ),
         );
@@ -53,17 +54,30 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  Widget submitButton(Bloc bloc) {
+  Widget passwordTwoField(Bloc bloc) {
     return StreamBuilder(
-      stream: bloc.submitValid,
+      stream: bloc.passwordTwo,
       builder: (context, snapshot) {
-        return RaisedButton(
-          child: Text('Login'),
-          // onPressed: snapshot.hasData ? bloc.submit : null,
-          onPressed: bloc.login,
-          color: Colors.blue[100],
-        );
+        return TextField(
+            onChanged: bloc.changePasswordTwo,
+            obscureText: true,
+            decoration: InputDecoration(
+              labelText: "Confirm Password",
+              errorText: snapshot.error,
+            ));
       },
     );
+  }
+
+  Widget submitButton(Bloc bloc) {
+    return StreamBuilder(
+        stream: bloc.submitValid,
+        builder: (context, snapshot) {
+          return RaisedButton(
+            child: Text('Register'),
+            onPressed: bloc.register,
+            color: Colors.green[100],
+          );
+        });
   }
 }
