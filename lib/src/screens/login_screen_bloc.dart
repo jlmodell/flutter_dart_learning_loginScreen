@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import '../blocs/bloc.dart';
 import '../blocs/provider.dart';
+import 'dart:async';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatelessWidget {
   Widget build(context) {
     final bloc = Provider.of(context);
+    String token = '';
 
     return Container(
       margin: EdgeInsets.all(20.0),
@@ -15,6 +18,8 @@ class LoginScreen extends StatelessWidget {
           passwordField(bloc),
           Padding(padding: EdgeInsets.only(top: 30.0)),
           submitButton(bloc),
+          Padding(padding: EdgeInsets.only(top: 30.0)),
+          showToken(),
         ],
       ),
     );
@@ -63,6 +68,30 @@ class LoginScreen extends StatelessWidget {
           color: Colors.blue[100],
         );
       },
+    );
+  }
+
+  printToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token' ?? '');
+    print(token);
+  }
+
+  showTokenButton() {
+    return RaisedButton(
+      child: Text('Show Token'),
+      onPressed: printToken,
+      color: Colors.red[200],
+    );
+  }
+
+  Widget showToken() {
+    return Container(
+      child: Column(
+        children: [
+          showTokenButton(),
+        ],
+      ),
     );
   }
 }

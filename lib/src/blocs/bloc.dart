@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:rxdart/rxdart.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'validators.dart'; //mixin validate methods to stream below
 
 class Bloc extends Object with Validators {
@@ -11,6 +12,7 @@ class Bloc extends Object with Validators {
   final _passwordTwo = new BehaviorSubject<String>();
   final _login = 'https://busse-nestjs-api.herokuapp.com/users/login';
   final _register = 'https://busse-nestjs-api.herokuapp.com/users/register';
+  String token;
 
   // Getters
   // Change Data
@@ -54,9 +56,16 @@ class Bloc extends Object with Validators {
       body: body,
     );
 
-    final token = json.decode(res.body)['token'];
+    // final token = json.decode(res.body)['token'];
 
-    print(token);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('token', json.decode(res.body)['token']);
+  }
+
+  printToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token' ?? '');
+    print("$token");
   }
 
   register() async {
